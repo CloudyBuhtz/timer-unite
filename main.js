@@ -114,18 +114,18 @@ window.addEventListener("load", () => {
   let defaultTime = 6;
   const month = (new Date()).getMonth();
 
-  if (month === 11) {
+  if (month === 11 || month === 0) {
     defaultCoin = "holiday";
     defaultTime = 6;
   }
-  if (month === 3) {
+  if (month === 3 || month === 4) {
     defaultCoin = "anniversary";
     defaultTime = 4;
   }
 
   // load from storage
-  const currentCoin = sessionStorage.getItem("coin") ?? defaultCoin;
-  const currentTime = parseInt(sessionStorage.getItem("time") ?? defaultTime);
+  const currentCoin = sessionStorage.getItem("coin") ?? localStorage.getItem("coin") ?? defaultCoin;
+  const currentTime = parseInt(sessionStorage.getItem("time") ?? localStorage.getItem("time") ?? defaultTime);
   const coins = [...document.querySelectorAll(".controls img")];
 
   setCoin(coins.filter(c => c.dataset.coin === currentCoin)[0]);
