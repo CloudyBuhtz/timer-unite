@@ -1,0 +1,141 @@
+:root {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  font-weight: normal;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--font-color);
+  display: grid;
+  place-content: center;
+  width: 100vw;
+  height: 100vh;
+
+  &.ghoul {
+    --background-color: #2b0d46;
+    --box-color: #4c1a4e;
+    --font-color: #fab269;
+
+    --background-hl: #d65b49;
+    --font-hl: #791d46;
+  }
+
+  &.holiday {
+    --background-color: #1f3325;
+    --box-color: #36593b;
+    --font-color: #ffb3bf;
+
+    --background-hl: #80193b;
+    --font-hl: #cc2944;
+  }
+
+  &.anniversary {
+    --background-color: #0B4085;
+    --box-color: #55B4E6;
+    --font-color: #E5BC68;
+
+    --background-hl: #FF6B6B;
+    --font-hl: #BFE75F;
+
+  }
+}
+
+.container {
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  width: 92.5vw;
+  height: 92.5vh;
+}
+
+.controls {
+  font-size: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1ch;
+  padding-block: 1ch;
+
+  img {
+    cursor: pointer;
+    transition: filter 100ms linear;
+
+    filter: grayscale(100%);
+
+    &:hover {
+      filter: grayscale(35%);
+    }
+
+    &.highlighted {
+      filter: grayscale(0%);
+    }
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  label {
+    position: relative;
+    width: 2rem;
+    height: 1rem;
+    cursor: pointer;
+  }
+
+  input[type=checkbox]+label::before {
+    content: " ";
+    display: block;
+    height: 1rem;
+    border-radius: 9px;
+    background: var(--box-color);
+  }
+
+  input[type=checkbox]+label::after {
+    content: " ";
+    display: block;
+    height: 1rem;
+    width: 1rem;
+    top: 0;
+    left: 1rem;
+    border-radius: 50%;
+    position: absolute;
+    background: var(--font-color);
+    transition: all 0.3s ease-in;
+  }
+
+  input[type=checkbox]:checked+label::after {
+    left: 0;
+    transition: all 0.3s ease-in;
+  }
+}
+
+.delay {
+  font-size: 2rem;
+  text-align: center;
+  background-color: var(--box-color);
+  user-select: none;
+}
+
+.sectors {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 2px;
+
+  .sector {
+    background-color: var(--box-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em;
+    color: var(--font-color);
+    user-select: none;
+    background-color: var(--box-color);
+
+    &.highlighted {
+      background-color: var(--background-hl);
+      color: var(--font-hl);
+    }
+  }
+}
