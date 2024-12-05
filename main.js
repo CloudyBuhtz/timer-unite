@@ -10,12 +10,12 @@ const timeLoop = () => {
   const nowMinutes = nowTime.getMinutes();
   const nowSeconds = nowTime.getSeconds();
 
-  let delayMinutes = period - (nowMinutes % period);
-  let delaySeconds = 60 - nowSeconds;
+  const delayMinutes = period - (nowMinutes % period);
+  const delaySeconds = 60 - nowSeconds;
 
   // Clear Sectors
   if (nowMinutes == 0 && nowSeconds == 0) {
-    let sectorList = document.querySelectorAll(".sector");
+    const sectorList = document.querySelectorAll(".sector");
     sectorList.forEach((el) => el.classList.remove("highlighted"));
     sectorList[0].classList.add("highlighted");
   }
@@ -25,7 +25,7 @@ const timeLoop = () => {
     sound.play();
 
     // Highlight Sectors
-    let sectorList = document.querySelectorAll(".sector");
+    const sectorList = document.querySelectorAll(".sector");
 
     sectorList.forEach((el) => {
       if (nowMinutes >= el.dataset.minutes) {
@@ -36,10 +36,10 @@ const timeLoop = () => {
     });
   }
 
-  let delayDiv = document.querySelector(".delay");
+  const delayDiv = document.querySelector(".delay");
 
-  let displayMinutes = delayMinutes < 10 ? `0${(delayMinutes - 1).toString()}` : delayMinutes.toString();
-  let displaySeconds = delaySeconds < 10 ? `0${delaySeconds.toString()}` : delaySeconds.toString();
+  const displayMinutes = delayMinutes < 10 ? `0${(delayMinutes - 1).toString()}` : delayMinutes.toString();
+  const displaySeconds = delaySeconds < 10 ? `0${delaySeconds.toString()}` : delaySeconds.toString();
   delayDiv.innerText = `${displayMinutes} : ${displaySeconds}`;
 
   loopTimeout = window.setTimeout(timeLoop, 1000);
@@ -78,7 +78,7 @@ const setup = () => {
 };
 
 const setFavicon = (s) => {
-  var link = document.querySelector("link[rel~='icon']");
+  const link = document.querySelector("link[rel~='icon']");
   link.href = `./${s}.ico`;
 };
 
