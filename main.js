@@ -82,25 +82,41 @@ const setFavicon = (s) => {
   link.href = `./${s}.ico`;
 };
 
-window.addEventListener("load", () => {
-  // load from storage
-  const currentCoin = localStorage.getItem("coin") ?? "ghoul";
-  const currentTime = parseInt(localStorage.getItem("time") ?? "6");
+const setCoin = (coin) => {
   const coins = document.querySelectorAll(".controls img");
 
   coins.forEach((e) => {
-    if (e.dataset.coin === currentCoin) {
+    if (e.dataset.coin === coin.dataset.coin) {
       e.classList.add("highlighted");
     } else {
       e.classList.remove("highlighted");
     }
   });
-  document.body.className = currentCoin;
-  setFavicon(currentCoin);
+  document.body.className = coin.dataset.coin;
+  setFavicon(coin.dataset.coin);
+  localStorage.setItem("coin", coin.dataset.coin);
 
-  const time = document.querySelector("#time");
-  period = currentTime;
-  time.checked = currentTime === 4;
+  if (coin.dataset.time) {
+    setPeriod(parseInt(coin.dataset.time));
+  }
+};
+
+const setPeriod = (p) => {
+  period = p;
+  localStorage.setItem("time", p.toString());
+  document.querySelector("#time").checked = p === 4;
+  setup();
+};
+
+window.addEventListener("load", () => {
+  // load from storage
+  const currentCoin = localStorage.getItem("coin") ?? "ghoul";
+  const currentTime = parseInt(localStorage.getItem("time") ?? "6");
+  const coins = [...document.querySelectorAll(".controls img")];
+
+  setCoin(coins.filter(c => c.dataset.coin === currentCoin)[0]);
+
+  setPeriod(currentTime);
 
   setup();
 
@@ -108,17 +124,10 @@ window.addEventListener("load", () => {
     const hc = document.querySelector(".controls > img.highlighted");
     if (e.dataset.coin === hc.dataset.coin) return;
 
-    coins.forEach(c => c.classList.remove("highlighted"));
-    e.classList.add("highlighted");
-
-    setFavicon(e.dataset.coin);
-    localStorage.setItem("coin", e.dataset.coin);
-    document.body.className = e.dataset.coin;
+    setCoin(e);
   }));
 
   time.addEventListener("change", () => {
-    period = period === 6 ? 4 : 6;
-    localStorage.setItem("time", period.toString());
-    setup();
+    setPeriod(period === 6 ? 4 : 6);
   });
 });

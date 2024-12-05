@@ -43,8 +43,8 @@ body {
   display: flex;
   gap: 2px;
   flex-direction: column;
-  width: 92.5vw;
-  height: 92.5vh;
+  width: 95vw;
+  height: 95vh;
 }
 
 .controls {
