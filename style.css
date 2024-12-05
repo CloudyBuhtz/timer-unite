@@ -55,6 +55,8 @@ body {
   align-items: center;
   gap: 1ch;
   padding-block: 1ch;
+  background-color: var(--box-color);
+  padding-inline: 1ch;
 
   img {
     cursor: pointer;
@@ -87,7 +89,7 @@ body {
     display: block;
     height: 1rem;
     border-radius: 9px;
-    background: var(--box-color);
+    background: var(--background-color);
   }
 
   input[type=checkbox]+label::after {
@@ -112,7 +114,7 @@ body {
 .delay {
   font-size: 2rem;
   text-align: center;
-  background-color: var(--box-color);
+  flex-grow: 1;
   user-select: none;
 }
 

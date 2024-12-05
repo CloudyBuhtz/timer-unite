@@ -94,7 +94,7 @@ const setCoin = (coin) => {
   });
   document.body.className = coin.dataset.coin;
   setFavicon(coin.dataset.coin);
-  localStorage.setItem("coin", coin.dataset.coin);
+  sessionStorage.setItem("coin", coin.dataset.coin);
 
   if (coin.dataset.time) {
     setPeriod(parseInt(coin.dataset.time));
@@ -103,19 +103,32 @@ const setCoin = (coin) => {
 
 const setPeriod = (p) => {
   period = p;
-  localStorage.setItem("time", p.toString());
+  sessionStorage.setItem("time", p.toString());
   document.querySelector("#time").checked = p === 4;
   setup();
 };
 
 window.addEventListener("load", () => {
+  // Guess the coin / time
+  let defaultCoin = "ghoul";
+  let defaultTime = 6;
+  const month = (new Date()).getMonth();
+
+  if (month === 11) {
+    defaultCoin = "holiday";
+    defaultTime = 6;
+  }
+  if (month === 3) {
+    defaultCoin = "anniversary";
+    defaultTime = 4;
+  }
+
   // load from storage
-  const currentCoin = localStorage.getItem("coin") ?? "ghoul";
-  const currentTime = parseInt(localStorage.getItem("time") ?? "6");
+  const currentCoin = sessionStorage.getItem("coin") ?? defaultCoin;
+  const currentTime = parseInt(sessionStorage.getItem("time") ?? defaultTime);
   const coins = [...document.querySelectorAll(".controls img")];
 
   setCoin(coins.filter(c => c.dataset.coin === currentCoin)[0]);
-
   setPeriod(currentTime);
 
   setup();
