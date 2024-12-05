@@ -10,6 +10,7 @@ body {
   place-content: center;
   width: 100vw;
   height: 100vh;
+  transition: background-color 100ms linear, color 100ms linear;
 
   &.ghoul {
     --background-color: #2b0d46;
@@ -132,7 +133,7 @@ body {
     font-size: 2.5em;
     color: var(--font-color);
     user-select: none;
-    background-color: var(--box-color);
+    transition: background-color 100ms linear, color 100ms linear;
 
     &.highlighted {
       background-color: var(--background-hl);
