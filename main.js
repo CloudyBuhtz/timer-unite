@@ -5,20 +5,15 @@ let period = 6;
 let sound;
 let loopTimeout;
 
+let tOffset = 0;
+
 const timeLoop = () => {
-  const nowTime = new Date(Date.now());
+  const nowTime = new Date(Date.now() + tOffset);
   const nowMinutes = nowTime.getMinutes();
   const nowSeconds = nowTime.getSeconds();
 
   const delayMinutes = period - (nowMinutes % period);
   const delaySeconds = 60 - nowSeconds;
-
-  // Clear Sectors
-  if (nowMinutes == 0 && nowSeconds == 0) {
-    const sectorList = document.querySelectorAll(".sector");
-    sectorList.forEach((el) => el.classList.remove("highlighted"));
-    sectorList[0].classList.add("highlighted");
-  }
 
   // console.log(`${nowMinutes % SECTOR} : ${nowSeconds}`)
   if (nowMinutes % period == 0 && nowSeconds == 0) {
@@ -36,6 +31,14 @@ const timeLoop = () => {
     });
   }
 
+  // Clear Sectors
+  if (nowMinutes == 0 && nowSeconds == 0) {
+    const sectorList = document.querySelectorAll(".sector");
+    sectorList.forEach((el) => el.classList.remove("highlighted"));
+    sectorList[0].classList.add("highlighted");
+    setTimeout(setup, 1000);
+  }
+
   const delayDiv = document.querySelector(".delay");
 
   const displayMinutes = delayMinutes < 10 ? `0${(delayMinutes - 1).toString()}` : delayMinutes.toString();
@@ -48,8 +51,10 @@ const timeLoop = () => {
 const setup = () => {
   window.clearTimeout(loopTimeout);
 
+  tOffset = parseInt(sessionStorage.getItem("tOffset") ?? "0");
+
   //setup sectors
-  const nowTime = new Date(Date.now());
+  const nowTime = new Date(Date.now() + tOffset);
   const nowMinutes = nowTime.getMinutes();
   const nowHour = nowTime.getHours();
   const displayHour = nowHour < 10 ? `0${nowHour.toString()}` : nowHour.toString();
@@ -71,8 +76,6 @@ const setup = () => {
 
     // console.log(`00:${displayMin}`)
   }
-
-  sound = new Audio("sound.wav");
 
   timeLoop();
 };
@@ -108,6 +111,12 @@ const setPeriod = (p) => {
   setup();
 };
 
+const setVolume = (v) => {
+  sound.volume = v / 100;
+  document.querySelector("#volume").value = v;
+  sessionStorage.setItem("volume", v.toString());
+};
+
 window.addEventListener("load", () => {
   // Guess the coin / time
   let defaultCoin = "ghoul";
@@ -126,10 +135,15 @@ window.addEventListener("load", () => {
   // load from storage
   const currentCoin = sessionStorage.getItem("coin") ?? localStorage.getItem("coin") ?? defaultCoin;
   const currentTime = parseInt(sessionStorage.getItem("time") ?? localStorage.getItem("time") ?? defaultTime);
+  const currentVolume = parseInt(sessionStorage.getItem("volume") ?? "100");
+
   const coins = [...document.querySelectorAll(".controls img")];
 
   setCoin(coins.filter(c => c.dataset.coin === currentCoin)[0]);
   setPeriod(currentTime);
+
+  sound = new Audio("sound.wav");
+  setVolume(currentVolume);
 
   setup();
 
@@ -143,4 +157,9 @@ window.addEventListener("load", () => {
   time.addEventListener("change", () => {
     setPeriod(period === 6 ? 4 : 6);
   });
+
+  document.querySelector("#volume").addEventListener("change", (e) => {
+    setVolume(e.target.value);
+  });
+  volume.addEventListener("click", () => sound.play());
 });
